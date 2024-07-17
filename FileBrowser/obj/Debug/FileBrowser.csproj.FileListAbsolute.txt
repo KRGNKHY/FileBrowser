@@ -1,0 +1,10 @@
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\bin\Debug\FileBrowser.exe.config
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\bin\Debug\FileBrowser.exe
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\bin\Debug\FileBrowser.pdb
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.csproj.AssemblyReference.cache
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.Form1.resources
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.Properties.Resources.resources
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.csproj.GenerateResource.cache
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.csproj.CoreCompileInputs.cache
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.exe
+C:\Users\GuestUser\source\repos\FileBrowser\FileBrowser\obj\Debug\FileBrowser.pdb
