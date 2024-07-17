@@ -24,6 +24,11 @@ namespace FileBrowser
             string initialFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             OpenFolder(initialFolder);
+            DirTreeNode driveNode = new DirTreeNode(Path.GetFileName(initialFolder), initialFolder);
+            treeView1.Nodes.Add(driveNode);
+
+            // +ボタンを表示させるために仮のノードを追加しておく
+            driveNode.Nodes.Add(new DirTreeNode());
         }
 
         private void OpenFolder(string folder)
@@ -124,9 +129,44 @@ namespace FileBrowser
             }
         }
 
-        private void folderList_SelectedIndexChanged(object sender, EventArgs e)
+        private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
+            // ノードの取得
+            DirTreeNode dirNode = (DirTreeNode)e.Node;
+
+            // 展開するノードは以下のノードをクリア
+            dirNode.Nodes.Clear();
+
+            foreach (string dirPath in Directory.GetDirectories(dirNode.DirectoryPath))
+            {
+                // フォルダ情報を取得
+                DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+
+                // 展開するノードは以下にサブフォルダのノードを追加
+                DirTreeNode subDirNode = new DirTreeNode(dirInfo.Name, dirPath);
+                dirNode.Nodes.Add(subDirNode);
+
+                if (Directory.GetDirectories(dirPath).Length > 0)
+                {
+                    subDirNode.Nodes.Add(new DirTreeNode());
+                }
+            }
 
         }
+    }
+
+    class DirTreeNode : TreeNode
+    {
+        // 仮のノード用のコンストラクタ
+        public DirTreeNode() { }
+
+        // コンストラクタにてフォルダ名、フォルダパスを設定
+        public DirTreeNode(string directoryName, string directoryPath) : base(directoryName)
+        {
+            this.DirectoryPath = directoryPath;
+        }
+
+        //フォルダパス
+        public string DirectoryPath { get; set; }
     }
 }

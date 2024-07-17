@@ -34,10 +34,16 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentsText = new System.Windows.Forms.TextBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // addressText
@@ -51,22 +57,21 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(13, 42);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.AllowDrop = true;
             this.splitContainer1.Panel1.Controls.Add(this.folderList);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.contentsText);
-            this.splitContainer1.Size = new System.Drawing.Size(707, 450);
-            this.splitContainer1.SplitterDistance = 184;
+            this.splitContainer1.Size = new System.Drawing.Size(571, 451);
+            this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 1;
             // 
             // folderList
@@ -78,11 +83,10 @@
             this.folderList.HideSelection = false;
             this.folderList.Location = new System.Drawing.Point(0, 0);
             this.folderList.Name = "folderList";
-            this.folderList.Size = new System.Drawing.Size(184, 450);
+            this.folderList.Size = new System.Drawing.Size(187, 451);
             this.folderList.TabIndex = 0;
             this.folderList.UseCompatibleStateImageBehavior = false;
             this.folderList.View = System.Windows.Forms.View.Details;
-            this.folderList.SelectedIndexChanged += new System.EventHandler(this.folderList_SelectedIndexChanged);
             this.folderList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.folderList_KeyPress);
             this.folderList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.folderList_MouseDoubleClick);
             // 
@@ -101,15 +105,40 @@
             this.contentsText.Location = new System.Drawing.Point(0, 0);
             this.contentsText.Multiline = true;
             this.contentsText.Name = "contentsText";
-            this.contentsText.Size = new System.Drawing.Size(519, 450);
+            this.contentsText.Size = new System.Drawing.Size(380, 451);
             this.contentsText.TabIndex = 0;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(132, 451);
+            this.treeView1.TabIndex = 1;
+            this.treeView1.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeExpand);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Location = new System.Drawing.Point(13, 41);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.treeView1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
+            this.splitContainer2.Size = new System.Drawing.Size(707, 451);
+            this.splitContainer2.SplitterDistance = 132;
+            this.splitContainer2.TabIndex = 2;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(732, 504);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.addressText);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -119,6 +148,10 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,10 +161,12 @@
 
         private System.Windows.Forms.TextBox addressText;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView folderList;
         private System.Windows.Forms.TextBox contentsText;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ListView folderList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
 
