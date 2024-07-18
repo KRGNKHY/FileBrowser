@@ -137,7 +137,9 @@ namespace FileBrowser
             // 展開するノードは以下のノードをクリア
             dirNode.Nodes.Clear();
 
-            foreach (string dirPath in Directory.GetDirectories(dirNode.DirectoryPath))
+            string[] dirPaths = Directory.GetDirectories(dirNode.DirectoryPath);
+
+            foreach (string dirPath in dirPaths)
             {
                 // フォルダ情報を取得
                 DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
@@ -155,6 +157,16 @@ namespace FileBrowser
                         subDirNode.Nodes.Add(new DirTreeNode());
                     }
                 }
+            }
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            DirTreeNode dirTreeNode = (DirTreeNode)e.Node;
+            DirectoryInfo dirList = new DirectoryInfo(dirTreeNode.FullPath);
+            foreach (DirectoryInfo dirInfo in dirList.GetDirectories(dirTreeNode.DirectoryPath)) { 
+                ListViewItem item = new ListViewItem(dirInfo.Name);
+                OpenItem(item);
             }
         }
     }
