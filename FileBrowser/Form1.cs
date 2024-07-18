@@ -142,16 +142,20 @@ namespace FileBrowser
                 // フォルダ情報を取得
                 DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
 
-                // 展開するノードは以下にサブフォルダのノードを追加
-                DirTreeNode subDirNode = new DirTreeNode(dirInfo.Name, dirPath);
-                dirNode.Nodes.Add(subDirNode);
-
-                if (Directory.GetDirectories(dirPath).Length > 0)
+                // OSのシステムフォルダはここでは除外する
+                // System.UnauthorizedAccessExceptionの例外となるため
+                if ((dirInfo.Attributes & FileAttributes.System) != FileAttributes.System)
                 {
-                    subDirNode.Nodes.Add(new DirTreeNode());
+                    // 展開するノードは以下にサブフォルダのノードを追加
+                    DirTreeNode subDirNode = new DirTreeNode(dirInfo.Name, dirPath);
+                    dirNode.Nodes.Add(subDirNode);
+
+                    if (Directory.GetDirectories(dirPath).Length > 0)
+                    {
+                        subDirNode.Nodes.Add(new DirTreeNode());
+                    }
                 }
             }
-
         }
     }
 
