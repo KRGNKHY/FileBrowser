@@ -31,6 +31,8 @@ namespace FileBrowser
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, null);
             this.addressText = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.folderList = new System.Windows.Forms.ListView();
@@ -57,6 +59,7 @@ namespace FileBrowser
             this.addressText.Name = "addressText";
             this.addressText.Size = new System.Drawing.Size(928, 22);
             this.addressText.TabIndex = 0;
+            this.addressText.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.addressText_KeyPress);
             // 
             // splitContainer1
             // 
@@ -84,6 +87,8 @@ namespace FileBrowser
             this.columnHeader2});
             this.folderList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.folderList.HideSelection = false;
+            this.folderList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem3});
             this.folderList.Location = new System.Drawing.Point(0, 0);
             this.folderList.Name = "folderList";
             this.folderList.Size = new System.Drawing.Size(187, 472);

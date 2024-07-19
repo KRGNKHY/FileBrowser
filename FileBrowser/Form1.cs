@@ -20,52 +20,68 @@ namespace FileBrowser
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // 初期フォルダは、MyDocuments
-            string initialFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            // 初期フォルダは、Cドライブ
+            string[] drives = Environment.GetLogicalDrives();
 
-            OpenFolder(initialFolder);
-            DirTreeNode driveNode = new DirTreeNode(Path.GetFileName(initialFolder), initialFolder);
-            treeView1.Nodes.Add(driveNode);
+            foreach (string drive in drives)
+            {
+                // +ボタンを表示させるために仮のノードを追加しておく
+                TreeNode node = new TreeNode(drive);
+                node.Nodes.Add(new TreeNode());
+                this.treeView1.Nodes.Add(node);
+            }
 
-            // +ボタンを表示させるために仮のノードを追加しておく
-            driveNode.Nodes.Add(new DirTreeNode());
+            // Cドライブのノードのみ開く
+            this.treeView1.Nodes[0].Expand();
+
+            // ListViewにドライブの情報を表示
+            OpenFolder(drives.First());
         }
 
         private void OpenFolder(string folder)
         {
-            if (!Directory.Exists(folder))
+            try
             {
-                return;
+                if (!Directory.Exists(folder))
+                {
+                    return;
+                }
+
+                // 現在のフォルダパスを、テキストボックスに表示
+                this.addressText.Text = folder;
+
+                // 次のディレクトリに移動する際に、前のディレクトリの情報を破棄する
+                this.folderList.Items.Clear();
+                this.folderList.Items.Add("上のフォルダへ");
+
+                // 初期フォルダのサブフォルダを一覧表示
+                string[] dirs = Directory.GetDirectories(folder);
+                foreach (string dir in dirs)
+                {
+                    // Path.GetFileName()：フルパスからファイル名のみを取得
+                    string[] subItems = new string[] { Path.GetFileName(dir), "フォルダ" };
+
+                    // this.folderListはListView(デザインの左側のペイン)の名前
+                    ListViewItem item = new ListViewItem(subItems);
+                    this.folderList.Items.Add(item);
+                }
+
+                // 初期フォルダのファイルの一覧表示
+                string[] files = Directory.GetFiles(folder);
+                foreach (string file in files)
+                {
+                    string[] subItems = new string[] { Path.GetFileName(file), "ファイル" };
+
+                    // this.folderListはListView(デザインの左側のペイン)の名前
+                    ListViewItem item = new ListViewItem(subItems);
+                    this.folderList.Items.Add(item);
+                }
             }
-
-            // 現在のフォルダパスを、テキストボックスに表示
-            this.addressText.Text = folder;
-
-            // 次のディレクトリに移動する際に、前のディレクトリの情報を破棄する
-            this.folderList.Items.Clear();
-            this.folderList.Items.Add("上のフォルダへ");
-
-            // 初期フォルダのサブフォルダを一覧表示
-            string[] dirs = Directory.GetDirectories(folder);
-            foreach (string dir in dirs)
+            catch (Exception ex)
             {
-                // Path.GetFileName()：フルパスからファイル名のみを取得
-                string[] subItems = new string[] { Path.GetFileName(dir), "フォルダ" };
-
-                // this.folderListはListView(デザインの左側のペイン)の名前
-                ListViewItem item = new ListViewItem(subItems);
-                this.folderList.Items.Add(item);
-            }
-
-            // 初期フォルダのファイルの一覧表示
-            string[] files = Directory.GetFiles(folder);
-            foreach (string file in files)
-            {
-                string[] subItems = new string[] { Path.GetFileName(file), "ファイル" };
-
-                // this.folderListはListView(デザインの左側のペイン)の名前
-                ListViewItem item = new ListViewItem(subItems);
-                this.folderList.Items.Add(item);
+                string parentDir = Path.GetDirectoryName(this.addressText.Text);
+                OpenFolder(parentDir);
+                MessageBox.Show(ex.Message + "\nこのフォルダまたはファイルは開くことができません。", "選択エラー");
             }
         }
 
@@ -132,57 +148,73 @@ namespace FileBrowser
         private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             // ノードの取得
-            DirTreeNode dirNode = (DirTreeNode)e.Node;
+            TreeNode node = e.Node;
+
+            // パスの取得
+            string path = node.FullPath;
 
             // 展開するノードは以下のノードをクリア
-            dirNode.Nodes.Clear();
-
-            string[] dirPaths = Directory.GetDirectories(dirNode.DirectoryPath);
-
-            foreach (string dirPath in dirPaths)
+            node.Nodes.Clear();
+            try
             {
-                // フォルダ情報を取得
-                DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+                string[] dirPaths = Directory.GetDirectories(path);
 
-                // OSのシステムフォルダはここでは除外する
-                // System.UnauthorizedAccessExceptionの例外となるため
-                if ((dirInfo.Attributes & FileAttributes.System) != FileAttributes.System)
+                foreach (string dirPath in dirPaths)
                 {
-                    // 展開するノードは以下にサブフォルダのノードを追加
-                    DirTreeNode subDirNode = new DirTreeNode(dirInfo.Name, dirPath);
-                    dirNode.Nodes.Add(subDirNode);
+                    // フォルダ情報を取得
+                    DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
 
-                    if (Directory.GetDirectories(dirPath).Length > 0)
+                    // OSのシステムフォルダはここでは除外する
+                    // System.UnauthorizedAccessExceptionの例外となるため
+                    if ((dirInfo.Attributes & FileAttributes.System) != FileAttributes.System)
                     {
-                        subDirNode.Nodes.Add(new DirTreeNode());
+                        // 展開するノードは以下にサブフォルダのノードを追加
+                        // +ボタンを表示させるために仮のノードを追加しておく
+                        TreeNode subNode = new TreeNode(dirInfo.Name);
+                        subNode.Nodes.Add(new TreeNode());
+                        node.Nodes.Add(subNode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\nこのフォルダまたはファイルは開くことができません。", "選択エラー");
+            }
+
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            OpenFolder(e.Node.FullPath);
+        }
+
+        private void addressText_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                string path = this.addressText.Text;
+                {
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        OpenFolder(path);
                     }
                 }
             }
         }
 
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            DirTreeNode dirTreeNode = (DirTreeNode)e.Node;
-            DirectoryInfo dirList = new DirectoryInfo(dirTreeNode.FullPath);
-            foreach (DirectoryInfo dirInfo in dirList.GetDirectories(dirTreeNode.DirectoryPath)) { 
-                ListViewItem item = new ListViewItem(dirInfo.Name);
-                OpenItem(item);
-            }
-        }
-    }
+        /*    class DirTreeNode : TreeNode
+            {
+                // 仮のノード用のコンストラクタ
+                public DirTreeNode() { }
 
-    class DirTreeNode : TreeNode
-    {
-        // 仮のノード用のコンストラクタ
-        public DirTreeNode() { }
+                // コンストラクタにてフォルダ名、フォルダパスを設定
+                public DirTreeNode(string directoryName, string directoryPath) : base(directoryName)
+                {
+                    this.DirectoryPath = directoryPath;
+                }
 
-        // コンストラクタにてフォルダ名、フォルダパスを設定
-        public DirTreeNode(string directoryName, string directoryPath) : base(directoryName)
-        {
-            this.DirectoryPath = directoryPath;
-        }
-
-        //フォルダパス
-        public string DirectoryPath { get; set; }
+                //フォルダパス
+                public string DirectoryPath { get; set; }
+            }*/
     }
 }
