@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -125,8 +126,23 @@ namespace FileBrowser
 
         private void OpenFile(string path)
         {
-            // ファイルの中身をテキストボックスに表示する
-            this.contentsText.Text = File.ReadAllText(path);
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    return;
+                }
+                // Form2のコンストラクタでパスに相当する画像イメージを取得
+                Form2 form2 = new Form2(path);
+
+                // 取得した画像イメージをフォーム2に表示する
+                form2.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                // ファイルの中身をテキストボックスに表示する
+                this.contentsText.Text = File.ReadAllText(path);
+            }
         }
 
         private void folderList_KeyPress(object sender, KeyPressEventArgs e)
@@ -201,20 +217,5 @@ namespace FileBrowser
                 }
             }
         }
-
-        /*    class DirTreeNode : TreeNode
-            {
-                // 仮のノード用のコンストラクタ
-                public DirTreeNode() { }
-
-                // コンストラクタにてフォルダ名、フォルダパスを設定
-                public DirTreeNode(string directoryName, string directoryPath) : base(directoryName)
-                {
-                    this.DirectoryPath = directoryPath;
-                }
-
-                //フォルダパス
-                public string DirectoryPath { get; set; }
-            }*/
     }
 }

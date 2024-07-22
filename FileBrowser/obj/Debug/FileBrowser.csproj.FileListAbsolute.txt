@@ -18,3 +18,4 @@ C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.cspr
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.csproj.CoreCompileInputs.cache
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.exe
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.pdb
+C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.Form2.resources
