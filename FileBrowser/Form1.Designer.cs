@@ -31,7 +31,7 @@ namespace FileBrowser
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, null);
             this.addressText = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -41,6 +41,7 @@ namespace FileBrowser
             this.contentsText = new System.Windows.Forms.TextBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -77,21 +78,22 @@ namespace FileBrowser
             // 
             this.splitContainer1.Panel2.Controls.Add(this.contentsText);
             this.splitContainer1.Size = new System.Drawing.Size(751, 472);
-            this.splitContainer1.SplitterDistance = 187;
+            this.splitContainer1.SplitterDistance = 250;
             this.splitContainer1.TabIndex = 1;
             // 
             // folderList
             // 
             this.folderList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader2,
+            this.columnHeader3});
             this.folderList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.folderList.HideSelection = false;
             this.folderList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem1});
             this.folderList.Location = new System.Drawing.Point(0, 0);
             this.folderList.Name = "folderList";
-            this.folderList.Size = new System.Drawing.Size(187, 472);
+            this.folderList.Size = new System.Drawing.Size(250, 472);
             this.folderList.TabIndex = 0;
             this.folderList.UseCompatibleStateImageBehavior = false;
             this.folderList.View = System.Windows.Forms.View.Details;
@@ -113,7 +115,7 @@ namespace FileBrowser
             this.contentsText.Location = new System.Drawing.Point(0, 0);
             this.contentsText.Multiline = true;
             this.contentsText.Name = "contentsText";
-            this.contentsText.Size = new System.Drawing.Size(560, 472);
+            this.contentsText.Size = new System.Drawing.Size(497, 472);
             this.contentsText.TabIndex = 0;
             // 
             // treeView1
@@ -145,6 +147,10 @@ namespace FileBrowser
             this.splitContainer2.Size = new System.Drawing.Size(928, 472);
             this.splitContainer2.SplitterDistance = 173;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "形式";
             // 
             // Form1
             // 
@@ -185,6 +191,7 @@ namespace FileBrowser
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private ColumnHeader columnHeader3;
     }
 }
 

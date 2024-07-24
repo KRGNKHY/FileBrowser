@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 
 namespace FileBrowser
 {
@@ -31,7 +32,6 @@ namespace FileBrowser
                 node.Nodes.Add(new TreeNode());
                 this.treeView1.Nodes.Add(node);
             }
-
             // Cドライブのノードのみ開く
             this.treeView1.Nodes[0].Expand();
 
@@ -71,7 +71,13 @@ namespace FileBrowser
                 string[] files = Directory.GetFiles(folder);
                 foreach (string file in files)
                 {
-                    string[] subItems = new string[] { Path.GetFileName(file), "ファイル" };
+                    // ファイル名を取得
+                    string fileName = Path.GetFileName(file);
+
+                    //拡張子を取得
+                    string extension = Path.GetExtension(file);
+
+                    string[] subItems = new string[] { fileName, "ファイル", extension };
 
                     // this.folderListはListView(デザインの左側のペイン)の名前
                     ListViewItem item = new ListViewItem(subItems);
@@ -118,7 +124,14 @@ namespace FileBrowser
                     }
                 case "ファイル":
                     {
-                        OpenFile(path);
+                        if (IsValidImage(path))
+                        {
+                            OpenImage(path);
+                        }
+                        else
+                        {
+                            OpenFile(path);
+                        }
                         break;
                     }
             }
@@ -132,16 +145,58 @@ namespace FileBrowser
                 {
                     return;
                 }
-                // Form2のコンストラクタでパスに相当する画像イメージを取得
-                Form2 form2 = new Form2(path);
-
-                // 取得した画像イメージをフォーム2に表示する
-                form2.ShowDialog();
+                XLWorkbook workbook = new XLWorkbook(path);
+                IXLWorksheet worksheet = workbook.Worksheet(1);
+                int lastRow = worksheet.LastRowUsed().RowNumber();
+                for (int i = 1; i <= lastRow; i++)
+                {
+                    IXLCell cell = worksheet.Cell(i, 1);
+                    Console.WriteLine(cell.Value);
+                }
+                // ファイルの中身をテキストボックスに表示する
+                this.contentsText.Text = File.ReadAllText(path);
             }
             catch (Exception ex)
             {
-                // ファイルの中身をテキストボックスに表示する
-                this.contentsText.Text = File.ReadAllText(path);
+    
+            }
+        }
+
+        private static void OpenImage(string path)
+        {
+            // Form2のコンストラクタでパスに相当する画像イメージを取得
+            Form2 form2 = new Form2(path);
+
+            // 取得した画像イメージをフォーム2に表示する
+            form2.ShowDialog();
+        }
+
+        // 画像形式ファイルかどうかを判断するメソッド
+        private static bool IsValidImage(string path)
+        {
+            List<ImageFormat> imageFormats = new List<ImageFormat>()
+            {
+                ImageFormat.Bmp,
+                ImageFormat.Gif,
+                ImageFormat.Jpeg,
+                ImageFormat.Png,
+            };
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    return false;
+                }
+                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                using (Image image = Image.FromStream(fs))
+                {
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+
+                return false;
             }
         }
 
@@ -180,16 +235,11 @@ namespace FileBrowser
                     // フォルダ情報を取得
                     DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
 
-                    // OSのシステムフォルダはここでは除外する
-                    // System.UnauthorizedAccessExceptionの例外となるため
-                    if ((dirInfo.Attributes & FileAttributes.System) != FileAttributes.System)
-                    {
-                        // 展開するノードは以下にサブフォルダのノードを追加
-                        // +ボタンを表示させるために仮のノードを追加しておく
-                        TreeNode subNode = new TreeNode(dirInfo.Name);
-                        subNode.Nodes.Add(new TreeNode());
-                        node.Nodes.Add(subNode);
-                    }
+                    // 展開するノードは以下にサブフォルダのノードを追加
+                    // +ボタンを表示させるために仮のノードを追加しておく
+                    TreeNode subNode = new TreeNode(dirInfo.Name);
+                    subNode.Nodes.Add(new TreeNode());
+                    node.Nodes.Add(subNode);
                 }
             }
             catch (Exception ex)
