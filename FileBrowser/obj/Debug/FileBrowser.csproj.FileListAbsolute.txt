@@ -40,3 +40,4 @@ C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\bin\Debug\System.Memory.xm
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrow.2BEDCBFB.Up2Date
+C:\Users\GuestUser\Source\Repos\newFolder\FileBrowser\obj\Debug\FileBrowser.csproj.ResolveComReference.cache

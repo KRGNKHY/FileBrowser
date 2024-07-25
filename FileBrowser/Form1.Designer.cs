@@ -33,15 +33,17 @@ namespace FileBrowser
         {
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             ""}, -1, System.Drawing.SystemColors.WindowText, System.Drawing.SystemColors.Window, null);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.addressText = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.folderList = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contentsText = new System.Windows.Forms.TextBox();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -109,6 +111,10 @@ namespace FileBrowser
             // 
             this.columnHeader2.Text = "種類";
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "形式";
+            // 
             // contentsText
             // 
             this.contentsText.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -148,9 +154,15 @@ namespace FileBrowser
             this.splitContainer2.SplitterDistance = 173;
             this.splitContainer2.TabIndex = 2;
             // 
-            // columnHeader3
+            // printPreviewDialog1
             // 
-            this.columnHeader3.Text = "形式";
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
             // 
             // Form1
             // 
@@ -185,13 +197,14 @@ namespace FileBrowser
 
         private System.Windows.Forms.TextBox addressText;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TextBox contentsText;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ListView folderList;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private ColumnHeader columnHeader3;
+        private PrintPreviewDialog printPreviewDialog1;
+        private TextBox contentsText;
     }
 }
 

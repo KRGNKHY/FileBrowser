@@ -4,12 +4,16 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClosedXML.Excel;
+using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Word;
+
 
 namespace FileBrowser
 {
@@ -124,6 +128,7 @@ namespace FileBrowser
                     }
                 case "ファイル":
                     {
+                        // 開いたファイルが画像である場合はOpenImage、そうでない場合はOpenFile
                         if (IsValidImage(path))
                         {
                             OpenImage(path);
@@ -145,20 +150,42 @@ namespace FileBrowser
                 {
                     return;
                 }
-                XLWorkbook workbook = new XLWorkbook(path);
-                IXLWorksheet worksheet = workbook.Worksheet(1);
-                int lastRow = worksheet.LastRowUsed().RowNumber();
-                for (int i = 1; i <= lastRow; i++)
+                /*    XLWorkbook workbook = new XLWorkbook(path);
+                    IXLWorksheet worksheet = workbook.Worksheet(1);
+                    int lastRow = worksheet.LastRowUsed().RowNumber();
+                    for (int i = 1; i <= lastRow; i++)
+                    {
+                        IXLCell cell = worksheet.Cell(i, 1);
+                        Console.WriteLine(cell.Value);
+                    }*/
+
+                // 拡張子
+                string extension = Path.GetExtension(path);
+
+                if (extension == ".txt")
                 {
-                    IXLCell cell = worksheet.Cell(i, 1);
-                    Console.WriteLine(cell.Value);
+                    // ファイルの中身をテキストボックスに表示する
+                    this.contentsText.Text = File.ReadAllText(path);
                 }
-                // ファイルの中身をテキストボックスに表示する
-                this.contentsText.Text = File.ReadAllText(path);
+                else if (extension.Contains(".xls"))
+                {
+                    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+                    Workbooks xlBooks = xlApp.Workbooks;
+                    Workbook xlBook = xlBooks.Open(path);
+                    xlApp.Visible = true;
+                }
+                else if (extension.Contains(".doc"))
+                {
+                    Microsoft.Office.Interop.Word.Application docApp = new Microsoft.Office.Interop.Word.Application();
+                    Documents docs = docApp.Documents;
+                    Document doc = docs.Open(path);
+                    docApp.Visible = true;
+                }
+
             }
             catch (Exception ex)
             {
-    
+
             }
         }
 
