@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using ClosedXML.Excel;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Interop.Word;
+using Microsoft.Office.Interop.PowerPoint;
+using System.Runtime.InteropServices;
 
 
 namespace FileBrowser
@@ -150,14 +152,6 @@ namespace FileBrowser
                 {
                     return;
                 }
-                /*    XLWorkbook workbook = new XLWorkbook(path);
-                    IXLWorksheet worksheet = workbook.Worksheet(1);
-                    int lastRow = worksheet.LastRowUsed().RowNumber();
-                    for (int i = 1; i <= lastRow; i++)
-                    {
-                        IXLCell cell = worksheet.Cell(i, 1);
-                        Console.WriteLine(cell.Value);
-                    }*/
 
                 // 拡張子
                 string extension = Path.GetExtension(path);
@@ -169,10 +163,8 @@ namespace FileBrowser
                 }
                 else if (extension.Contains(".xls"))
                 {
-                    Microsoft.Office.Interop.Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
-                    Workbooks xlBooks = xlApp.Workbooks;
-                    Workbook xlBook = xlBooks.Open(path);
-                    xlApp.Visible = true;
+                    // Excelファイルを開く
+                    OpenBook(path);
                 }
                 else if (extension.Contains(".doc"))
                 {
@@ -180,13 +172,60 @@ namespace FileBrowser
                     Documents docs = docApp.Documents;
                     Document doc = docs.Open(path);
                     docApp.Visible = true;
+                    while (docApp.Visible == true)
+                    {
+                    }
+                }
+                else if (extension.Contains(".ppt"))
+                {
+                    Microsoft.Office.Interop.PowerPoint.Application ppApp = new Microsoft.Office.Interop.PowerPoint.Application();
+                    Presentations presentations = ppApp.Presentations;
+                    Presentation presentation = presentations.Open(path);
+                    presentation.Save();
+                    presentation.Close();
                 }
 
             }
             catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message, "選択エラー");
             }
+        }
+
+
+        private static void OpenBook(string path)
+        {
+            var xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+            //Workbooksオブジェクトの作成
+            Workbooks xlBooks = xlApp.Workbooks;
+
+            //エクセルファイルの指定
+            Workbook xlBook = xlBooks.Open(path);
+
+            //操作中のエクセルを表示したいときにTrueにする
+            xlApp.Visible = true;
+
+            while (xlApp.Visible == true)
+            {
+            }
+
+            if (xlBook != null)
+            {
+                Marshal.ReleaseComObject(xlBook);
+            }
+            if (xlBooks != null)
+            {
+                Marshal.ReleaseComObject(xlBooks);
+            }
+
+            if (xlApp != null)
+            {
+                //エクセルを閉じる
+                xlApp.Quit();
+            }
+            Marshal.ReleaseComObject(xlApp);
+
         }
 
         private static void OpenImage(string path)
